@@ -25,6 +25,12 @@ public class TridentMeta {
             txId = getCurTxId(tx);
             path = _rootPath + "/" + tx + "/user/partition_" + partition + "/" + txId;
             data = _zkHelper.getData(path,true);
+            //try last tx id
+            if(data == null) {
+                Long id = Long.valueOf(txId) - 1;
+                path = _rootPath + "/" + tx + "/user/partition_" + partition + "/" + id;
+                data = _zkHelper.getData(path,true);
+            }
             try {
                 Thread.sleep(100);
             } catch (Exception ex) {
